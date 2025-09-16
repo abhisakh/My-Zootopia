@@ -21,20 +21,31 @@ def generate_animal_info(data):
         output += '<li class="cards__item">'
 
         if block.get("name"):
-            output += f"Name: {block['name']}<br/>\n"
+            output += '<div class="card__title">'
+            output += f" {block['name']}"
+            output += '</div><br/>\n'
+        output += '<p class="card__text">\n'
 
         if block.get("characteristics", {}).get("diet"):
-            output += f"Diet: {block['characteristics']['diet']}<br/>\n"
+            output += '<p class="card__text">'
+            output += '<strong>Diet:</strong>'
+            output += f" {block['characteristics']['diet']}<br/>\n"
 
         if block.get("locations") and len(block["locations"]) > 0:
-            output += f"Location: {block['locations'][0]}<br/>\n"
+            output += '<strong>Location:</strong>'
+            output += f" {block['locations'][0]}<br/>\n"
 
         if block.get("characteristics", {}).get("type"):
-            output += f"Type: {block['characteristics']['type']}<br/>\n"
+            output += '<strong>Type:</strong>'
+            output += f" {block['characteristics']['type']}<br/>\n"
 
         #output += "<br>\n"  # spacing between animals
+        output += '</p>'
         output += '</li>'
+        output += '\n'
+        output += '\n'
     return output
+
 
 # Step 4: Replace the placeholder with actual content
 def create_final_html(template_str, animals_html):
