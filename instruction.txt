@@ -443,3 +443,50 @@ for animal_obj in data:
 This structure allows you to change the serialization of a single animal
 without changing your entire code.
 ------------------------------------------------------------------------
+-----------------------Bonus - More Fields----------------------------
+------------------------------------------------------------------------
+Bonus - Improved HTML & CSS
+Bonus Step
+This is a bonus step, you can skip it if you want.
+Description
+Using <br/> to separate between newlines in HTML is considered a bad practice,
+especially in this case.
+A better approach would be for each field to be inside a different div or li
+describing it. It also allows you to control the appearance of the fields more
+easily using CSS.
+
+Transform your current code to output each field in a separate list item:
+
+<li class="cards__item">
+  <div class="card__title">English Foxhound</div>
+  <div class="card__text">
+    <ul>
+      <li><strong>Diet:</strong> Carnivore</li>
+      <li><strong>Location:</strong> North-America and Canada</li>
+      <li><strong>Type:</strong> mammal</li>
+    </ul>
+  </div>
+</li>
+
+Add CSS classes to the internal <ul> and <li> to control the formatting in a
+way that you find pleasing.
+
+------------------------------------------------------------------------
+-----------------------Bonus - Python Filtering-------------------------
+------------------------------------------------------------------------
+
+This is a bonus step, you can skip it if you want.
+
+Description
+Change your Python script so it displays to the user a list of the available
+skin_type values from the JSON file.
+
+The user then needs to enter a skin_type from the displayed list, and then the
+scripts generates the website only for the animals with the selected skin_type.
+For example, if the user entered "Hair", only animals with “Hair” skin type
+should be displayed, such as "American Foxhound".
+
+Animals with missing skin_type field
+You should decide how you want to handle this edge case.
+Next
+--------------------------------------------------------------------------

@@ -1,46 +1,20 @@
 import json
 
 
-# Step 1: Load animal data from JSON
 def load_data(file_path):
-    """
-    Load data from a JSON file.
-
-    Args:
-        file_path (str): Path to the JSON file.
-
-    Returns:
-        list or dict: Parsed JSON data.
-    """
+    """Load data from a JSON file."""
     with open(file_path, "r") as handle:
         return json.load(handle)
 
 
-# Step 2: Read the template HTML file
 def load_template(template_path):
-    """
-    Load the HTML template file as a string.
-
-    Args:
-        template_path (str): Path to the template HTML file.
-
-    Returns:
-        str: Template file content.
-    """
+    """Load the HTML template file as a string."""
     with open(template_path, "r") as f:
         return f.read()
 
+
 def serialize_animal(animal_obj, indent=4):
-    """
-    Generate an indented HTML string containing single animal information.
-
-    Args:
-        animal_obj (dict): Single animal dictionary.
-        indent (int): Number of spaces to use for base indentation.
-
-    Returns:
-        str: HTML string for a single animal card.
-    """
+    """Generate an indented HTML string containing single animal information."""
     output = ''
     outer_space = ' ' * indent
     space = ' ' * (indent * 2)
@@ -85,57 +59,80 @@ def serialize_animal(animal_obj, indent=4):
 
     return output
 
-# Step 3: Generate the HTML string with animal info (only if data exists)
+
 def generate_animal_info(data):
-    """
-    Generate an indented HTML string containing animal information.
-    Use serialize_animal(animal_obj, indent=4) inside
-
-    Args:
-        data (list): List of dictionaries with animal data.
-        indent (int): Number of spaces to use for base indentation.
-
-    Returns:
-        str: Generated HTML string with animal cards.
-    """
+    """Generate an indented HTML string containing animal information."""
     output = ''
     for animal_obj in data:
         output += serialize_animal(animal_obj, indent=4)
     return output
 
-# Step 4: Replace the placeholder with actual content
+
 def create_final_html(template_str, animals_html):
-    """
-    Replace placeholder in template with generated animal HTML.
-
-    Args:
-        template_str (str): The HTML template string.
-        animals_html (str): The generated HTML string for animals.
-
-    Returns:
-        str: Final HTML with animal info inserted.
-    """
+    """Replace placeholder in template with generated animal HTML."""
     return template_str.replace("__REPLACE_ANIMALS_INFO__", animals_html)
 
 
-# Step 5: Write the result to animals.html
 def write_output(file_path, content):
-    """
-    Write content to a file.
-
-    Args:
-        file_path (str): Path to the output file.
-        content (str): Content to write.
-    """
+    """Write content to a file."""
     with open(file_path, "w") as f:
         f.write(content)
 
 
+def get_unique_skin_types(data):
+    """
+    Extract unique skin_type values from animals data.
+    Animals missing skin_type are treated as 'Unknown'.
+    Adds 'All' to the beginning of the list.
+    """
+    skin_types = set()
+    for animal in data:
+        skin_type = animal.get("characteristics", {}).get("skin_type")
+        if not skin_type:
+            skin_type = "Unknown"
+        skin_types.add(skin_type)
+    return ["All"] + sorted(skin_types)
+
+
+def filter_animals_by_skin_type(data, selected_skin_type):
+    """
+    Filter animal list by selected skin_type.
+    Returns all animals if 'All' is selected.
+    """
+    if selected_skin_type == "All":
+        return data
+
+    filtered = []
+    for animal in data:
+        skin_type = animal.get("characteristics", {}).get("skin_type")
+        if not skin_type:
+            skin_type = "Unknown"
+        if skin_type == selected_skin_type:
+            filtered.append(animal)
+    return filtered
+
+
 if __name__ == "__main__":
     animals_data = load_data("animals_data.json")
+    skin_type_list = get_unique_skin_types(animals_data)
+
+    print("Available skin_type values:")
+    for idx, skin_type in enumerate(skin_type_list, 1):
+        print(f"{idx}. {skin_type}")
+
+    while True:
+        user_input = input("Enter a skin_type from the list above (or 'All' to show all animals): ").strip()
+        if user_input in skin_type_list:
+            break
+        else:
+            print("Invalid input. Please enter a valid skin_type from the list.")
+
+    filtered_animals = filter_animals_by_skin_type(animals_data, user_input)
+
     template_html = load_template("animals_template.html")
-    animal_info_html = generate_animal_info(animals_data)
+    animal_info_html = generate_animal_info(filtered_animals)
     final_html = create_final_html(template_html, animal_info_html)
     write_output("animals.html", final_html)
 
-    print("animals.html generated successfully.")
+    print(f"animals.html generated successfully for skin_type: {user_input}")
+
