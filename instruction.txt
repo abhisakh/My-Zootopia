@@ -289,3 +289,97 @@ Commit reminder
 Commit your changes with a message akin to “bring animal data into html”.
 Push your changes to the remote repository.
 -----------------------------------------------------------------------------
+
+Step 3 - Making It Nice
+In the previous step we practiced the basics of writing data to an HTML file,
+and we got an unsatisfying result. The problem is that we didn’t really write
+HTML to the file, we just wrote text.
+-----------------
+Item Serialization
+What is Serialization?
+Serialization is the process of converting an object or data structure into
+a format that can be easily stored, transmitted, or reconstructed later. In
+this context, we mean taking the animal object and outputting a text that
+represents it.
+--------------------
+Current Serialization
+Currently, each animal item is serialized as a simple text to your HTML file:
+
+Name: Wire Fox Terrier
+Diet: Carnivore
+Location: North-America and Canada
+Type: mamal
+-----------------
+New Serialization
+We would like to change it, and to serialize each item as HTML:
+<li class="cards__item">
+Name: Wire Fox Terrier<br/>
+Diet: Carnivore<br/>
+Location: North-America and Canada<br/>
+Type: mamal<br/>
+</li>
+---------------------
+Complete HTML Output
+The complete HTML output should be similar to:
+...
+<ul class="cards">
+    <li class="cards__item">
+    Name: American Foxhound<br/>
+    Diet: Omnivore<br/>
+    Location: North-America<br/>
+    Type: Hound<br/>
+    </li>
+    <li class="cards__item">
+    Name: Arctic Fox<br/>
+    Diet: Carnivore<br/>
+    Location: Eurasia<br/>
+    Type: Mammal<br/>
+    </li>
+    ...
+</ul>
+...
+-----------------
+How to do that?
+You need to change your code, that currently looks like that:
+output = ''  # define an empty string
+for animal_data in data:
+    # append information to each string
+    output += f"Name: {animal_data['name']}\n"
+    output += f"Diet: {animal_data['characteristics']['diet']}\n"
+    ...
+print(output)
+
+To something similar to:
+output = ''  # define an empty string
+for animal_data in data:
+    # append information to each string
+    output += '<li class="cards__item">'
+    output += f"Name: {animal_data['name']}<br/>\n"
+    output += f"Diet: {animal_data['characteristics']['diet']}<br/>\n"
+    ...
+    output += '</li>'
+print(output)
+
+Note about HTML Output
+HTML doesn’t care if the output has newlines and spaces or not. For example,
+this HTML code:
+
+<li class="cards__item">
+Name: American Foxhound<br/>
+Diet: Omnivore<br/>
+Is equivalent to this code:
+<li class="cards__item">Name: American Foxhound<br/>Diet: Omnivore<br/>
+When you inspect your HTML output, don’t mind if you don’t have spaces and
+newlines exactly like our examples. It doesn’t matter, as long as it works.
+---------------
+Step Summary
+If you open it in the browser, you would see something similar to this:
+alt text
+Well, this is something to start with! Let’s improve it in the next step…
+Commit reminder
+Upon completing this step, commit your changes with a message along the
+lines of “generate card item for every animal”. Push your changes to the
+remote repository.
+
+------------------------------------------------------------------------------
+
