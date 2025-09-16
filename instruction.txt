@@ -383,3 +383,63 @@ remote repository.
 
 ------------------------------------------------------------------------------
 
+Step 4 - Like A Pro
+---------------------
+Now that you know how to generate HTML with Python, it’s time to put the final
+design into place.
+
+Serialization
+Change the item serialization to be as follow:
+<li class="cards__item">
+  <div class="card__title">Wire Fox Terrier</div>
+  <p class="card__text">
+      <strong>Diet:</strong> Carnivore<br/>
+      <strong>Location:</strong> North-America and Canada<br/>
+      <strong>Type:</strong> mamal<br/>
+  </p>
+</li>
+You already know how to do that.
+
+Step Summary
+Hooray! You finished generating your first HTML page with Python 🎊
+Click here to open the expected output and compare it to yours. You can also
+Click here to view the final expected HTML output.
+
+Commit reminder
+Commit message example: “improve card item html”. Push your changes to the
+remote repository.
+---------------------------------------------------------------------------------
+
+Formatting Your Code
+--------------------
+As always, organize your code and make sure it follows the best practices, including
+division into functions and PEP 8 guidelines.
+Suggestion
+To keep your code organized, we suggest exporting the serialization of a single animal o
+bject to a different function.
+
+Instead of this code:
+output = ''
+for animal_data in data:
+    output += '<li class="cards__item">\n'
+    output += f'<div class="card__title">{animal_data["name"]}</div>\n'
+    ...
+
+We suggest creating a function called serialize_animal(animal_obj) that will handle a
+single animal serialization:
+
+def serialize_animal(animal_obj):
+    output = ''
+    output += '<li class="cards__item">\n'
+    output += f'<div class="card__title">{animal_obj["name"]}</div>\n'
+    ...
+    return output
+
+And then your original code can be simplified to be more readable:
+output = ''
+for animal_obj in data:
+    output += serialize_animal(animal_obj)
+
+This structure allows you to change the serialization of a single animal
+without changing your entire code.
+------------------------------------------------------------------------

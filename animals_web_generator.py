@@ -30,7 +30,68 @@ def load_template(template_path):
     with open(template_path, "r") as f:
         return f.read()
 
+# Step Added later: Single animal serialization
+def serialize_animal(animal_obj, indent=4):
+    """
+    Generate an indented HTML string containing single animal information.
 
+    Args:
+        Single data part from json file (one animal)
+        indent (int): Number of spaces to use for base indentation.
+
+    Returns:
+        str: Generated HTML string with animal cards(single animal).
+    """
+    output = ''  # define an empty string
+
+    outer_space = ' ' * indent  # 4 spaces, e.g., '    '
+    space = 2 * outer_space      # 8 spaces
+    inner_space = 2 * space      # 16 spaces
+
+    output += f'{outer_space}<li class="cards__item">\n'
+
+    if animal_obj.get("name"):
+        output += f'{space}<div class="card__title">'
+        output += f" {animal_obj['name']}"
+        output += '</div><br/>\n'
+        output += f'{space}<p class="card__text">\n'
+
+    if animal_obj.get("characteristics", {}).get("diet"):
+        output += f'{inner_space}<strong>Diet:</strong>'
+        output += f" {animal_obj['characteristics']['diet']}<br/>\n"
+
+    if animal_obj.get("locations") and len(animal_obj["locations"]) > 0:
+        output += f'{inner_space}<strong>Location:</strong>'
+        output += f" {animal_obj['locations'][0]}<br/>\n"
+
+    if animal_obj.get("characteristics", {}).get("type"):
+        output += f'{inner_space}<strong>Type:</strong>'
+        output += f" {animal_obj['characteristics']['type']}<br/>\n"
+
+    output += f'{space}</p>\n'
+    output += f'{outer_space}</li>\n\n'
+    return output
+
+# Step 3: Generate the HTML string with animal info (only if data exists)
+def generate_animal_info(data):
+    """
+    Generate an indented HTML string containing animal information.
+    Use serialize_animal(animal_obj, indent=4) inside
+
+    Args:
+        data (list): List of dictionaries with animal data.
+        indent (int): Number of spaces to use for base indentation.
+
+    Returns:
+        str: Generated HTML string with animal cards.
+    """
+    output = ''
+    for animal_obj in data:
+        output += serialize_animal(animal_obj, indent=4)
+    return output
+
+
+'''
 # Step 3: Generate the HTML string with animal info (only if data exists)
 def generate_animal_info(data, indent=4):
     """
@@ -74,7 +135,7 @@ def generate_animal_info(data, indent=4):
         output += f'{outer_space}</li>\n\n'
 
     return output
-
+'''
 
 # Step 4: Replace the placeholder with actual content
 def create_final_html(template_str, animals_html):
